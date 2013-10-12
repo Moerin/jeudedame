@@ -12,20 +12,50 @@ namespace WindowsFormsApplication2
 {
     public partial class Form1 : Form
     {
+        private Bitmap _backBuffer;
         int square_w = 50;
         int pion_w = 40;
+        int cursor_x, cursor_y;
 
         List<Pion> liste_pion = new List<Pion>();
 
         public Form1()
         {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            //SetStyle(ControlStyles.UserPaint, true);
-            //SetStyle(ControlStyles.AllPaintingInWmPaint, true); 
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true); 
             SetStyle(ControlStyles.DoubleBuffer, true);
             InitializeComponent();
-            panel1.Paint += new PaintEventHandler(panel_Paint);
+            cursor_x = -1;
+            cursor_y = -1;
             create_pions();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (_backBuffer == null) {
+                _backBuffer = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
+            }
+            Graphics g = Graphics.FromImage(_backBuffer);
+            // Clear window
+            Brush brush = new SolidBrush(Color.White);
+            g.FillRectangle(brush, 0, 0, Width, Height);
+            // affiche l'ensemble des composants du jeu
+            liste_affichage(g);
+            g.Dispose();
+            //Copy the back buffer to the screen
+            e.Graphics.DrawImageUnscaled(_backBuffer, 0, 0);
+            //base.OnPaint (e); //optional but not recommended
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            //Don't allow the background to paint
+        }
+
+        void liste_affichage(Graphics g)
+        {
+            draw_grid(g);
+            draw_cursor();
+            draw_pions(g);
         }
 
         void create_pions()
@@ -60,15 +90,6 @@ namespace WindowsFormsApplication2
             } 
         }
 
-        void panel_Paint(object sender, PaintEventArgs e) {
-            using (Graphics g = this.panel1.CreateGraphics())
-            {
-                draw_grid(g);
-                draw_cursor();
-                draw_pions(g);
-            }
-        }
-
         // quadrillage de la surface de jeu
         void draw_grid(Graphics g)
         {
@@ -78,7 +99,7 @@ namespace WindowsFormsApplication2
                 for (int ix = 0; ix < 5; ix++)
                 {
                     int x = square_w * 2 * ix + square_w;
-                    int y = iy * 50;
+                    int y = iy * square_w;
                     if (iy % 2 != 0)
                     {
                         g.FillRectangle(brush, x - square_w, y, square_w, square_w);
@@ -89,6 +110,8 @@ namespace WindowsFormsApplication2
                     }
                 }
             }
+            Pen pen = new Pen(Color.Black);
+            g.DrawRectangle(pen, 0, 0, square_w * 10, square_w * 10);
         }
 
         void draw_pions(Graphics g)
@@ -101,14 +124,15 @@ namespace WindowsFormsApplication2
 
         void draw_cursor()
         {
-            Console.WriteLine("***");
+            Console.WriteLine("X: " + cursor_x);
+            Console.WriteLine("Y: " + cursor_y);
         }
 
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            panel1.Invalidate();
-            Console.WriteLine("x. " + Location.X.ToString());
-            Console.WriteLine("y. " + Location.Y.ToString());
+            Invalidate();
+            cursor_x = e.Location.X / 50;
+            cursor_y = e.Location.Y / 50;
         }
 
     }

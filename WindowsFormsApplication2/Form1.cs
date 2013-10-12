@@ -67,14 +67,28 @@ namespace WindowsFormsApplication2
         {
             //base.OnClick(e);
             
-            // Boit de message qui affiche les coordonnes du curseur
-            MessageBox.Show("abscisse Curseur : " + cursor_x + ", " + "ordonnee Curseur : " + cursor_y);
+            // TODO: Test position pion et position curseur
+            foreach (Pion p in liste_pion)
+            {
+                Pion newPion = new Pion(cursor_x, cursor_y, square_w, Pion.pion_gender.Black);
+                
+                if (cursor_x == p.getXPosition() && cursor_y == p.getYPosition())
+                {
+                    liste_pion.Remove(p);
+                }
+                else { 
+                    
+                }
+            }
+
+            // Boite de message qui affiche les coordonnes du curseur
+            //MessageBox.Show("abscisse Curseur : " + cursor_x + ", " + "ordonnee Curseur : " + cursor_y);
 
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //Don't allow the background to paint
+            // Don't allow the background to paint
         }
 
         // Affiche tous les elements qui doivent etre present sur la fenetre

@@ -34,6 +34,16 @@ namespace WindowsFormsApplication2
             this.gender = gender;
         }
 
+        // Getter sur la position du pion
+        public int getXPosition(){
+            return this.x;
+        }
+
+        public int getYPosition()
+        {
+            return this.y;
+        }
+
         // Dessin du pion
         public void draw(Graphics g, int square_w)
         {
@@ -49,7 +59,7 @@ namespace WindowsFormsApplication2
             }
             Pen pen = new Pen(Color.Snow);
 
-            // Conversion coordonnées en entier [0-9] --- Centrage du pion dans la case
+            // Centrage du pion dans la case
             int x_px = x * square_w + (square_w - size) / 2;
             int y_px = y * square_w + (square_w - size) / 2;
             // Taille du pion

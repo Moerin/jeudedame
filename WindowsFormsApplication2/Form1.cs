@@ -46,6 +46,13 @@ namespace WindowsFormsApplication2
             //base.OnPaint (e); //optional but not recommended
         }
 
+        protected override void OnClick(EventArgs e)
+        {
+            //base.OnClick(e);
+            MessageBox.Show("abscisse Curseur : " + cursor_x + ", " + "ordonnee Curseur : " + cursor_y);
+
+        }
+
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
             //Don't allow the background to paint

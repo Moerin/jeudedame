@@ -44,6 +44,25 @@ namespace WindowsFormsApplication2
             return this.y;
         }
 
+        // Setter sur la postion du pion
+        public void setXPosition(int x) {
+            this.x = x;
+        }
+
+        public void setYPosition(int y) {
+            this.y = y;
+        }
+
+        public void setPosition(int x, int y)
+        {
+            this.y = y;
+            this.x = x;
+        }
+
+        public pion_gender getGender() {
+            return this.gender;
+        }
+
         // Dessin du pion
         public void draw(Graphics g, int square_w)
         {
